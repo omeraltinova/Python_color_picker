@@ -4,13 +4,18 @@ Bu uygulama, yüklediğiniz bir resim üzerinde mouse ile tıklayarak o noktanı
 
 ## Özellikler
 
-- 🖼️ Resim yükleme (PNG, JPEG, GIF, BMP, TIFF formatları desteklenir)
+- 🖼️ Resim yükleme (PNG, JPEG, GIF, BMP, TIFF)
 - 🎯 Mouse ile resim üzerinde renk seçimi
 - 📊 RGB ve HEX renk kodlarını gösterme
 - 🎨 Seçilen rengin görsel önizlemesi
-- 📋 HEX kodunu panoya kopyalama
+- 📋 HEX ve RGB kodunu panoya kopyalama
 - 📍 Mouse koordinatlarını gösterme
 - 🗑️ Resmi temizleme
+- 🌗 Modern arayüz (açık/koyu tema)
+- 🧭 Menü çubuğu (Dosya, Görünüm, Yardım)
+- 🧩 Esnek düzen (PanedWindow ile sürükle-bırak genişlik ayarı)
+- 🔔 Minimal toast bildirimleri ve durum çubuğu
+- 🖱️ Hover efektli butonlar
 
 ## Kurulum
 
@@ -18,6 +23,9 @@ Bu uygulama, yüklediğiniz bir resim üzerinde mouse ile tıklayarak o noktanı
 ```bash
 pip install -r requirements.txt
 ```
+
+Notlar:
+- `sv-ttk` modern ttk temasıdır ve isteğe bağlıdır. Kurulu değilse uygulama standart ttk ile çalışır.
 
 ## Kullanım
 
@@ -36,7 +44,15 @@ python color_picker.py
    - HEX renk kodu
    - Seçilen rengin görsel önizlemesi
 
-5. HEX kodunu panoya kopyalamak için "HEX Kodu Kopyala" butonuna tıklayın
+5. Kopyalamak için ilgili kopyalama butonlarını veya kısayolları kullanın
+
+### Kısayollar
+- Ctrl+O: Resim yükle
+- Ctrl+Q: Uygulamadan çık
+- Ctrl+= / Ctrl+-: Yakınlaştır / Uzaklaştır
+- Ctrl+0: Zoom sıfırla
+- Ctrl+C: Aktif renk kodunu kopyala (HEX)
+- F1: Yardım sekmesini aç
 
 ## Teknik Detaylar
 
@@ -44,6 +60,7 @@ python color_picker.py
 - **GUI Framework**: tkinter (Python built-in)
 - **Resim İşleme**: PIL/Pillow
 - **Desteklenen Formatlar**: PNG, JPEG, GIF, BMP, TIFF
+ - **Tema**: Varsayılan ttk; varsa `sv-ttk` ile modern açık/koyu tema
 
 ## Önemli Notlar
 

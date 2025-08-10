@@ -3,6 +3,15 @@ from tkinter import filedialog, messagebox, ttk
 from PIL import Image, ImageTk
 import os
 import json
+import platform
+try:
+    import sv_ttk  # Opsiyonel modern ttk teması
+except Exception:
+    sv_ttk = None
+try:
+    import ctypes  # Windows DPI farkındalığı
+except Exception:
+    ctypes = None
 
 class ColorPicker:
     def __init__(self, root):
@@ -10,25 +19,45 @@ class ColorPicker:
         self.root.title("Gelişmiş Renk Seçici - Advanced Color Picker")
         self.root.geometry("1200x800")
         self.root.minsize(1000, 600)
+        self.setup_high_dpi()
         
-        # Koyu tema renkleri
-        self.colors = {
+        # Tema paletleri
+        self.dark_colors = {
             'bg': '#1e1e1e',
             'fg': '#ffffff',
             'panel_bg': '#2d2d2d',
-            'button_bg': '#404040',
-            'button_hover': '#505050',
+            'button_bg': '#3a3a3a',
+            'button_hover': '#4a4a4a',
             'accent': '#0078d4',
             'success': '#107c10',
             'danger': '#d13438',
             'warning': '#ff8c00',
-            'canvas_bg': '#404040',
+            'canvas_bg': '#3c3c3c',
             'entry_bg': '#3c3c3c',
             'entry_fg': '#ffffff',
             'border': '#555555'
         }
+        self.light_colors = {
+            'bg': '#f5f6f7',
+            'fg': '#1e1e1e',
+            'panel_bg': '#ffffff',
+            'button_bg': '#e9e9e9',
+            'button_hover': '#dedede',
+            'accent': '#0078d4',
+            'success': '#107c10',
+            'danger': '#d13438',
+            'warning': '#ff8c00',
+            'canvas_bg': '#f0f0f0',
+            'entry_bg': '#ffffff',
+            'entry_fg': '#1e1e1e',
+            'border': '#d0d0d0'
+        }
+        self.current_theme = 'dark'
+        self.colors = dict(self.dark_colors)
+        self.sv_ttk_available = sv_ttk is not None
         
         self.root.configure(bg=self.colors['bg'])
+        self.create_style()
         
         # Ana değişkenler
         self.original_image = None
@@ -46,21 +75,24 @@ class ColorPicker:
         self.last_pan_y = 0
         self.is_panning = False
         
-        # UI oluştur
+        # Menü ve UI oluştur
+        self.create_menubar()
         self.create_widgets()
+        self.bind_common_shortcuts()
         
         # Responsive design için event binding
         self.root.bind('<Configure>', self.on_window_resize)
     
     def create_widgets(self):
         # Başlık
-        title_label = tk.Label(self.root, text="🎨 Gelişmiş Renk Seçici - Advanced Color Picker", 
+        self.title_label = tk.Label(self.root, text="🎨 Gelişmiş Renk Seçici - Advanced Color Picker", 
                               font=("Segoe UI", 18, "bold"), bg=self.colors['bg'], fg=self.colors['fg'])
-        title_label.pack(pady=15)
+        self.title_label.pack(pady=12)
         
         # Üst çerçeve - butonlar
         top_frame = tk.Frame(self.root, bg=self.colors['bg'])
-        top_frame.pack(pady=10)
+        top_frame.pack(fill=tk.X, padx=20, pady=(0, 10))
+        self.top_frame = top_frame
         
         # Resim yükleme butonu
         self.load_btn = tk.Button(top_frame, text="🖼️ Resim Yükle", 
@@ -70,10 +102,12 @@ class ColorPicker:
                                  padx=20, pady=8,
                                  cursor='hand2', relief=tk.FLAT)
         self.load_btn.pack(side=tk.LEFT, padx=10)
+        self.bind_button_hover(self.load_btn, self.colors['success'])
         
         # Zoom butonları
         zoom_frame = tk.Frame(top_frame, bg=self.colors['bg'])
         zoom_frame.pack(side=tk.LEFT, padx=20)
+        self.zoom_frame = zoom_frame
         
         self.zoom_in_btn = tk.Button(zoom_frame, text="🔍+", 
                                     command=self.zoom_in,
@@ -82,6 +116,7 @@ class ColorPicker:
                                     padx=15, pady=5,
                                     cursor='hand2', relief=tk.FLAT)
         self.zoom_in_btn.pack(side=tk.LEFT, padx=5)
+        self.bind_button_hover(self.zoom_in_btn, self.colors['accent'])
         
         self.zoom_out_btn = tk.Button(zoom_frame, text="🔍-", 
                                      command=self.zoom_out,
@@ -90,6 +125,7 @@ class ColorPicker:
                                      padx=15, pady=5,
                                      cursor='hand2', relief=tk.FLAT)
         self.zoom_out_btn.pack(side=tk.LEFT, padx=5)
+        self.bind_button_hover(self.zoom_out_btn, self.colors['accent'])
         
         self.zoom_reset_btn = tk.Button(zoom_frame, text="🔄 Sıfırla", 
                                        command=self.zoom_reset,
@@ -98,6 +134,7 @@ class ColorPicker:
                                        padx=15, pady=5,
                                        cursor='hand2', relief=tk.FLAT)
         self.zoom_reset_btn.pack(side=tk.LEFT, padx=5)
+        self.bind_button_hover(self.zoom_reset_btn, self.colors['warning'])
         
         # Temizle butonu
         self.clear_btn = tk.Button(top_frame, text="🗑️ Temizle", 
@@ -107,21 +144,32 @@ class ColorPicker:
                                   padx=20, pady=8,
                                   cursor='hand2', relief=tk.FLAT)
         self.clear_btn.pack(side=tk.RIGHT, padx=10)
+        self.bind_button_hover(self.clear_btn, self.colors['danger'])
+
+        # Tema butonu
+        self.theme_btn = tk.Button(top_frame, text="🌗 Tema", 
+                                   command=self.toggle_theme,
+                                   font=("Segoe UI", 12, "bold"),
+                                   bg=self.colors['button_bg'], fg='white',
+                                   padx=16, pady=8,
+                                   cursor='hand2', relief=tk.FLAT)
+        self.theme_btn.pack(side=tk.RIGHT, padx=10)
+        self.bind_button_hover(self.theme_btn, self.colors['button_bg'])
         
-        # Ana çerçeve
-        main_frame = tk.Frame(self.root, bg=self.colors['bg'])
-        main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
+        # Ana bölücü (PanedWindow) - modern, yeniden boyutlandırılabilir düzen
+        self.main_paned = tk.PanedWindow(self.root, orient=tk.HORIZONTAL, sashwidth=8, sashrelief=tk.FLAT, bg=self.colors['bg'])
+        self.main_paned.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
         
         # Sol taraf - resim görüntüleme
-        left_frame = tk.Frame(main_frame, bg=self.colors['bg'])
-        left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.left_frame = tk.Frame(self.main_paned, bg=self.colors['bg'])
+        self.main_paned.add(self.left_frame, minsize=280, stretch="always")
         
         # Canvas çerçevesi
-        canvas_frame = tk.Frame(left_frame, bg=self.colors['border'], relief=tk.SUNKEN, bd=2)
-        canvas_frame.pack(fill=tk.BOTH, expand=True, padx=(0, 20))
+        self.canvas_frame = tk.Frame(self.left_frame, bg=self.colors['border'], relief=tk.SUNKEN, bd=2)
+        self.canvas_frame.pack(fill=tk.BOTH, expand=True, padx=(0, 20))
         
         # Canvas
-        self.canvas = tk.Canvas(canvas_frame, bg=self.colors['canvas_bg'], cursor='crosshair')
+        self.canvas = tk.Canvas(self.canvas_frame, bg=self.colors['canvas_bg'], cursor='crosshair', highlightthickness=0, bd=0)
         self.canvas.pack(fill=tk.BOTH, expand=True)
         
         # Canvas olayları
@@ -141,19 +189,22 @@ class ColorPicker:
         self.canvas.focus_set()
         
         # Sağ taraf - kontrol paneli
-        right_frame = tk.Frame(main_frame, bg=self.colors['bg'], width=350)
-        right_frame.pack(side=tk.RIGHT, fill=tk.Y)
-        right_frame.pack_propagate(False)
+        self.right_frame = tk.Frame(self.main_paned, bg=self.colors['bg'], width=360)
+        self.main_paned.add(self.right_frame, minsize=300)
+        self.right_frame.pack_propagate(False)
         
-        # Notebook için tab sistemi
-        self.notebook = ttk.Notebook(right_frame)
+        # Notebook için tab sistemi (özel stil)
+        self.notebook = ttk.Notebook(self.right_frame, style='Modern.TNotebook', takefocus=0, padding=0)
+        try:
+            self.notebook.configure(highlightthickness=0)
+        except Exception:
+            pass
         self.notebook.pack(fill=tk.BOTH, expand=True, pady=10)
+        # Klavye odağını notebook'tan uzak tut (noktalı odak çerçevesini gizler)
+        self.notebook.bind('<FocusIn>', lambda e: (self.canvas.focus_set() if hasattr(self, 'canvas') else None))
+        self.notebook.bind('<Button-1>', lambda e: self.root.after(1, lambda: (self.canvas.focus_set() if hasattr(self, 'canvas') else None)))
         
-        # Stil ayarları
-        style = ttk.Style()
-        style.theme_use('clam')
-        style.configure('TNotebook', background=self.colors['bg'])
-        style.configure('TNotebook.Tab', background=self.colors['button_bg'], foreground=self.colors['fg'])
+        # Stil ayarları (temel) - Modern stil zaten oluşturuldu
         
         # Renk bilgileri sekmesi
         self.color_info_tab = tk.Frame(self.notebook, bg=self.colors['bg'])
@@ -176,10 +227,12 @@ class ColorPicker:
         # Yardım tab içeriği
         self.create_help_tab()
         
-        # Alt bilgi
-        footer_label = tk.Label(self.root, text="Mouse ile resim üzerinde gezinin ve tıklayın! 🖱️", 
-                               font=("Segoe UI", 11), bg=self.colors['bg'], fg=self.colors['fg'])
-        footer_label.pack(pady=10)
+        # Durum çubuğu
+        if not hasattr(self, 'status_var'):
+            self.status_var = tk.StringVar(value="Hazır")
+        self.status_bar = tk.Label(self.root, textvariable=self.status_var, anchor=tk.W,
+                                   font=("Segoe UI", 10), bg=self.colors['panel_bg'], fg=self.colors['fg'])
+        self.status_bar.pack(fill=tk.X, side=tk.BOTTOM)
     
     def create_color_info_tab(self):
         """Renk bilgileri sekmesi içeriğini oluştur"""
@@ -557,8 +610,8 @@ class ColorPicker:
             if hex_value:
                 self.root.clipboard_clear()
                 self.root.clipboard_append(hex_value)
-                # Kısa bilgi mesajı göster
-                self.root.after(100, lambda: messagebox.showinfo("Kopyalandı", f"Renk kodu kopyalandı: {hex_value}"))
+                self.show_toast(f"Renk kodu kopyalandı: {hex_value}", kind="success")
+                self.update_status(f"Kopyalandı: {hex_value}")
     
     def copy_rgb(self):
         """RGB kodunu panoya kopyala"""
@@ -567,14 +620,16 @@ class ColorPicker:
             if rgb_text and rgb_text != "R: -, G: -, B: -":
                 self.root.clipboard_clear()
                 self.root.clipboard_append(rgb_text)
-                messagebox.showinfo("Kopyalandı", f"RGB kodu kopyalandı: {rgb_text}")
+                self.show_toast(f"RGB kopyalandı: {rgb_text}", kind="success")
+                self.update_status(f"Kopyalandı: {rgb_text}")
     
     def clear_history(self):
         """Renk geçmişini temizle"""
         try:
             self.color_history = []
             self.update_history_display()
-            messagebox.showinfo("Temizlendi", "Renk geçmişi temizlendi.")
+            self.show_toast("Renk geçmişi temizlendi.")
+            self.update_status("Renk geçmişi temizlendi.")
         except Exception as e:
             print(f"Geçmiş temizleme hatası: {e}")
     
@@ -660,8 +715,8 @@ class ColorPicker:
                 # Resmi yükle
                 self.original_image = Image.open(file_path)
                 self.display_image_on_canvas()
-                
-                messagebox.showinfo("Başarılı", "Resim başarıyla yüklendi!\nRenk seçmek için resim üzerine tıklayın.")
+                self.show_toast("Resim yüklendi. Renk seçmek için tıklayın.", kind="success")
+                self.update_status(f"Yüklendi: {os.path.basename(file_path)}")
                 
             except Exception as e:
                 messagebox.showerror("Hata", f"Resim yüklenirken hata oluştu:\n{str(e)}")
@@ -808,7 +863,8 @@ class ColorPicker:
             if hex_value and hex_value != "#000000":
                 self.root.clipboard_clear()
                 self.root.clipboard_append(hex_value)
-                messagebox.showinfo("Kopyalandı", f"HEX kodu kopyalandı: {hex_value}")
+                self.show_toast(f"HEX kopyalandı: {hex_value}", kind="success")
+                self.update_status(f"Kopyalandı: {hex_value}")
     
     def clear_image(self):
         """Resmi temizle"""
@@ -837,7 +893,226 @@ class ColorPicker:
         # Zoom label'ını güncelle
         self.update_zoom_label()
         
-        messagebox.showinfo("Temizlendi", "Resim ve renk bilgileri temizlendi.")
+        self.show_toast("Resim ve renk bilgileri temizlendi.")
+        self.update_status("Temizlendi")
+
+    # ==== Modernizasyon: Tema, Stil, Menü, Kısayol, Toast ve Yardımcılar ====
+    def setup_high_dpi(self):
+        try:
+            if platform.system() == 'Windows' and ctypes is not None:
+                try:
+                    ctypes.windll.shcore.SetProcessDpiAwareness(1)
+                except Exception:
+                    pass
+            # Tk ölçeklendirme (hafif artırılmış)
+            try:
+                self.root.tk.call('tk', 'scaling', 1.15)
+            except Exception:
+                pass
+        except Exception:
+            pass
+
+    def create_style(self):
+        # Opsiyonel modern ttk teması
+        if self.sv_ttk_available:
+            try:
+                sv_ttk.set_theme(self.current_theme)
+            except Exception:
+                pass
+        style = ttk.Style()
+        # sv_ttk yoksa daha iyi özelleştirilebilen 'clam' temasını kullan
+        if not self.sv_ttk_available:
+            try:
+                style.theme_use('clam')
+            except Exception:
+                pass
+        # Temel arka plan ve yazılar
+        style.configure('TFrame', background=self.colors['bg'])
+        style.configure('TLabel', background=self.colors['bg'], foreground=self.colors['fg'])
+        if self.sv_ttk_available:
+            # Sun Valley teması için doğrudan TNotebook stilleri
+            style.configure('TNotebook', background=self.colors['bg'], borderwidth=0, tabmargins=(10, 6, 10, 0))
+            style.configure('TNotebook.Tab', background=self.colors['button_bg'], foreground=self.colors['fg'], padding=(16, 9), borderwidth=0)
+            style.map('TNotebook.Tab',
+                      background=[('selected', self.colors['panel_bg']),
+                                  ('active', self.colors['button_hover']),
+                                  ('!selected', self.colors['button_bg'])],
+                      foreground=[('selected', self.colors['fg']),
+                                  ('!selected', self.colors['fg'])])
+            try:
+                style.configure('TNotebook.Tab', focuscolor=self.colors['panel_bg'])
+            except Exception:
+                pass
+        else:
+            # Özel Notebook stili (clam tabanlı)
+            style.layout('Modern.TNotebook', [('Notebook.client', {'sticky': 'nswe'})])
+            style.configure('Modern.TNotebook', background=self.colors['bg'], borderwidth=0, padding=0, tabmargins=(10, 6, 10, 0), relief='flat')
+            style.configure('Modern.TNotebook.Tab', background=self.colors['button_bg'], foreground=self.colors['fg'], padding=(16, 9), borderwidth=0, relief='flat', focuscolor=self.colors['panel_bg'])
+            # Sekme durum eşlemeleri (seçili/aktif/normal)
+            style.map('Modern.TNotebook.Tab',
+                      background=[('selected', self.colors['panel_bg']),
+                                  ('active', self.colors['button_hover']),
+                                  ('!selected', self.colors['button_bg'])],
+                      foreground=[('selected', self.colors['fg']),
+                                  ('!selected', self.colors['fg'])])
+            # Odak çerçevesini kaldırmak için özel sekme yerleşimi (Notebook.focus elemanını çıkar)
+            style.layout('Modern.TNotebook.Tab', [
+                ('Notebook.tab', {
+                    'sticky': 'nswe',
+                    'children': [
+                        ('Notebook.padding', {
+                            'side': 'top', 'sticky': 'nswe',
+                            'children': [
+                                ('Notebook.label', {'side': 'top', 'sticky': ''})
+                            ]
+                        })
+                    ]
+                })
+            ])
+        style.configure('TLabelframe', background=self.colors['panel_bg'], foreground=self.colors['fg'])
+        style.configure('TLabelframe.Label', background=self.colors['panel_bg'], foreground=self.colors['fg'])
+        style.configure('Vertical.TScrollbar', background=self.colors['panel_bg'])
+
+    def create_menubar(self):
+        menubar = tk.Menu(self.root)
+        # Dosya
+        file_menu = tk.Menu(menubar, tearoff=0)
+        file_menu.add_command(label="Resim Yükle", command=self.load_image, accelerator="Ctrl+O")
+        file_menu.add_command(label="Temizle", command=self.clear_image, accelerator="Ctrl+Shift+C")
+        file_menu.add_separator()
+        file_menu.add_command(label="Çıkış", command=self.root.destroy, accelerator="Ctrl+Q")
+        menubar.add_cascade(label="Dosya", menu=file_menu)
+        # Görünüm
+        view_menu = tk.Menu(menubar, tearoff=0)
+        view_menu.add_command(label="Koyu Tema", command=lambda: self.set_theme('dark'))
+        view_menu.add_command(label="Açık Tema", command=lambda: self.set_theme('light'))
+        menubar.add_cascade(label="Görünüm", menu=view_menu)
+        # Yardım
+        help_menu = tk.Menu(menubar, tearoff=0)
+        help_menu.add_command(label="Hakkında", command=lambda: messagebox.showinfo(
+            "Hakkında", "Gelişmiş Renk Seçici\nModern arayüz + tema desteği"))
+        menubar.add_cascade(label="Yardım", menu=help_menu)
+        self.root.config(menu=menubar)
+
+    def bind_common_shortcuts(self):
+        self.root.bind('<Control-o>', lambda e: self.load_image())
+        self.root.bind('<Control-O>', lambda e: self.load_image())
+        self.root.bind('<Control-q>', lambda e: self.root.destroy())
+        self.root.bind('<Control-Q>', lambda e: self.root.destroy())
+        self.root.bind('<Control-Key-minus>', lambda e: self.zoom_out())
+        self.root.bind('<Control-Key-=>', lambda e: self.zoom_in())
+        self.root.bind('<Control-Key-0>', lambda e: self.zoom_reset())
+        self.root.bind('<F1>', lambda e: (self.notebook.select(self.help_tab) if hasattr(self, 'notebook') else None))
+        # Menü hızlandırıcıları için görsel
+        # Not: Tk menüde accelerator yalnızca görsel; bind ile aktif ettik
+
+    def set_theme(self, theme_mode: str):
+        theme_mode = 'dark' if theme_mode not in ('dark', 'light') else theme_mode
+        self.current_theme = theme_mode
+        # Tema kaynakları
+        self.colors = dict(self.dark_colors if theme_mode == 'dark' else self.light_colors)
+        if self.sv_ttk_available:
+            try:
+                sv_ttk.set_theme(theme_mode)
+            except Exception:
+                pass
+        self.rebuild_ui()
+
+    def toggle_theme(self):
+        self.set_theme('light' if self.current_theme == 'dark' else 'dark')
+
+    def rebuild_ui(self):
+        # Tüm UI öğelerini yeniden oluştur (tema geçişi için güvenli yaklaşım)
+        for child in list(self.root.winfo_children()):
+            # Tk menü root seviyesinde kalır; sadece çocukları temizliyoruz
+            try:
+                child.destroy()
+            except Exception:
+                pass
+        self.root.configure(bg=self.colors['bg'])
+        self.create_style()
+        self.create_menubar()
+        self.create_widgets()
+        self.bind_common_shortcuts()
+        # Görsel varsa yeniden göster
+        if self.original_image is not None:
+            self.display_image_on_canvas()
+
+    def update_status(self, text: str):
+        try:
+            if hasattr(self, 'status_var') and self.status_var is not None:
+                self.status_var.set(text)
+        except Exception:
+            pass
+
+    def bind_button_hover(self, button: tk.Button, base_bg: str):
+        hover_bg = self.colors['button_hover']
+        try:
+            button.configure(activebackground=hover_bg)
+        except Exception:
+            pass
+        def _enter(_):
+            try:
+                button.configure(bg=hover_bg)
+            except Exception:
+                pass
+        def _leave(_):
+            try:
+                button.configure(bg=base_bg)
+            except Exception:
+                pass
+        button.bind('<Enter>', _enter)
+        button.bind('<Leave>', _leave)
+
+    def show_toast(self, message: str, kind: str = 'info', duration_ms: int = 1600):
+        # Basit toast bildirimi (modern his)
+        try:
+            # Önceki toast'ı kapat
+            if hasattr(self, '_toast_window') and self._toast_window is not None:
+                try:
+                    self._toast_window.destroy()
+                except Exception:
+                    pass
+        except Exception:
+            pass
+        bg_map = {
+            'info': self.colors['panel_bg'],
+            'success': self.colors['success'],
+            'error': self.colors['danger'],
+            'warn': self.colors['warning']
+        }
+        fg = 'white' if kind in ('success', 'error', 'warn') or self.current_theme == 'dark' else '#000000'
+        bg = bg_map.get(kind, self.colors['panel_bg'])
+        top = tk.Toplevel(self.root)
+        self._toast_window = top
+        try:
+            top.overrideredirect(True)
+            top.attributes('-topmost', True)
+            if platform.system() != 'Darwin':
+                # Mac'te alpha sorun çıkarabiliyor; Windows/Linux'ta uygula
+                top.attributes('-alpha', 0.95)
+        except Exception:
+            pass
+        frm = tk.Frame(top, bg=bg, bd=0)
+        frm.pack(fill=tk.BOTH, expand=True)
+        lbl = tk.Label(frm, text=message, bg=bg, fg=fg, font=("Segoe UI", 10), padx=14, pady=10)
+        lbl.pack()
+        self.root.update_idletasks()
+        top.update_idletasks()
+        # Konum: sağ-alt
+        try:
+            rx = self.root.winfo_rootx()
+            ry = self.root.winfo_rooty()
+            rw = self.root.winfo_width()
+            rh = self.root.winfo_height()
+            tw = top.winfo_reqwidth()
+            th = top.winfo_reqheight()
+            x = rx + rw - tw - 24
+            y = ry + rh - th - 24
+            top.geometry(f"+{x}+{y}")
+        except Exception:
+            pass
+        top.after(duration_ms, lambda: (top.destroy() if top.winfo_exists() else None))
 
 def main():
     root = tk.Tk()
