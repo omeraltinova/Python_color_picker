@@ -1,0 +1,1 @@
+# Enhanced Color Picker - Test Suite

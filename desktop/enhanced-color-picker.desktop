@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=Enhanced Color Picker
+Comment=Professional color selection tool for designers and developers
+Comment[tr]=Tasarımcılar ve geliştiriciler için profesyonel renk seçim aracı
+Exec=python3 /usr/local/bin/enhanced-color-picker/main.py
+Icon=enhanced-color-picker
+Terminal=false
+Type=Application
+Categories=Graphics;Photography;Development;
+MimeType=image/png;image/jpeg;image/gif;image/bmp;image/tiff;image/webp;image/svg+xml;
+Keywords=color;picker;palette;design;graphics;image;
+Keywords[tr]=renk;seçici;palet;tasarım;grafik;resim;
+StartupNotify=true
+StartupWMClass=enhanced-color-picker

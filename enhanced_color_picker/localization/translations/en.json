@@ -1,0 +1,227 @@
+{
+  "ui": {
+    "main_window": {
+      "title": "Enhanced Color Picker",
+      "load_image": "Load Image",
+      "clear_image": "Clear",
+      "file_menu": "File",
+      "edit_menu": "Edit",
+      "view_menu": "View",
+      "tools_menu": "Tools",
+      "help_menu": "Help",
+      "exit": "Exit"
+    },
+    "image_canvas": {
+      "zoom_in": "Zoom In",
+      "zoom_out": "Zoom Out",
+      "fit_to_screen": "Fit to Screen",
+      "actual_size": "Actual Size",
+      "enable_pixel_grid": "Enable Pixel Grid",
+      "disable_pixel_grid": "Disable Pixel Grid",
+      "show_minimap": "Show Minimap",
+      "hide_minimap": "Hide Minimap"
+    },
+    "color_panel": {
+      "title": "Color Information",
+      "rgb_label": "RGB",
+      "hex_label": "HEX",
+      "hsl_label": "HSL",
+      "hsv_label": "HSV",
+      "cmyk_label": "CMYK",
+      "copy_button": "Copy",
+      "copy_all": "Copy All",
+      "css_format": "CSS Format",
+      "programming_format": "Programming Format",
+      "coordinates": "Coordinates",
+      "x_position": "X: {x}",
+      "y_position": "Y: {y}"
+    },
+    "palette_panel": {
+      "title": "Color Palette",
+      "new_palette": "New Palette",
+      "save_palette": "Save Palette",
+      "load_palette": "Load Palette",
+      "export_palette": "Export Palette",
+      "add_color": "Add Color",
+      "remove_color": "Remove Color",
+      "clear_palette": "Clear Palette",
+      "palette_name": "Palette Name",
+      "color_count": "{count} colors"
+    },
+    "history_panel": {
+      "title": "Color History",
+      "clear_history": "Clear History",
+      "add_to_favorites": "Add to Favorites",
+      "remove_from_favorites": "Remove from Favorites",
+      "search_placeholder": "Search colors...",
+      "no_history": "No color history yet",
+      "favorites": "Favorites"
+    },
+    "analysis_panel": {
+      "title": "Color Analysis",
+      "dominant_colors": "Dominant Colors",
+      "color_histogram": "Color Histogram",
+      "color_distribution": "Color Distribution",
+      "average_color": "Average Color",
+      "extract_palette": "Extract Palette",
+      "analyze_image": "Analyze Image"
+    },
+    "settings_panel": {
+      "title": "Settings",
+      "appearance": "Appearance",
+      "theme": "Theme",
+      "language": "Language",
+      "behavior": "Behavior",
+      "default_color_format": "Default Color Format",
+      "auto_save_palettes": "Auto Save Palettes",
+      "max_history_items": "Max History Items",
+      "performance": "Performance",
+      "zoom_sensitivity": "Zoom Sensitivity",
+      "enable_pixel_grid": "Enable Pixel Grid",
+      "pixel_grid_threshold": "Pixel Grid Threshold",
+      "cache_size": "Cache Size"
+    },
+    "accessibility": {
+      "title": "Accessibility",
+      "wcag_compliance": "WCAG Compliance",
+      "contrast_ratio": "Contrast Ratio",
+      "aa_compliant": "AA Compliant",
+      "aaa_compliant": "AAA Compliant",
+      "not_compliant": "Not Compliant",
+      "color_blindness": "Color Blindness",
+      "simulate_protanopia": "Simulate Protanopia",
+      "simulate_deuteranopia": "Simulate Deuteranopia",
+      "simulate_tritanopia": "Simulate Tritanopia",
+      "color_harmony": "Color Harmony",
+      "complementary": "Complementary",
+      "analogous": "Analogous",
+      "triadic": "Triadic"
+    },
+    "export": {
+      "title": "Export",
+      "format": "Format",
+      "css_format": "CSS",
+      "scss_format": "SCSS",
+      "json_format": "JSON",
+      "ase_format": "Adobe ASE",
+      "aco_format": "Adobe ACO",
+      "gpl_format": "GIMP GPL",
+      "export_button": "Export",
+      "file_saved": "File saved: {filename}"
+    },
+    "themes": {
+      "light": "Light",
+      "dark": "Dark",
+      "auto": "Auto"
+    },
+    "languages": {
+      "tr": "Türkçe",
+      "en": "English"
+    }
+  },
+  "messages": {
+    "success": {
+      "image_loaded": "Image loaded successfully",
+      "color_copied": "Color code copied: {color}",
+      "palette_saved": "Palette saved: {name}",
+      "palette_loaded": "Palette loaded: {name}",
+      "settings_saved": "Settings saved",
+      "language_changed": "Language changed: {language}",
+      "theme_changed": "Theme changed: {theme}"
+    },
+    "errors": {
+      "generic_error": "An unexpected error occurred",
+      "image_load_failed": "Failed to load image: {reason}",
+      "unsupported_format": "Unsupported file format. Please use PNG, JPEG, GIF, BMP, TIFF, WebP, or SVG format.",
+      "color_conversion_failed": "Failed to convert color from {source_format} to {target_format}",
+      "palette_operation_failed": "Palette operation '{operation}' failed",
+      "validation_failed": "Invalid {field_name}: {validation_rule}",
+      "memory_error": "Memory error during {operation}. Please try with a smaller image or close other applications.",
+      "file_operation_failed": "File operation '{operation}' failed on {file_path}",
+      "network_error": "Network operation '{operation}' failed. Please check your internet connection.",
+      "ui_error": "Interface error in {component}. Please try refreshing or restarting the application.",
+      "unexpected_error": "An unexpected error occurred. Please try again or restart the application.",
+      "file_not_found": "File not found: {filename}",
+      "palette_save_failed": "Failed to save palette: {error}",
+      "palette_load_failed": "Failed to load palette: {error}",
+      "invalid_color_format": "Invalid color format",
+      "memory_limit_exceeded": "Memory limit exceeded",
+      "permission_denied": "Permission denied",
+      "disk_space_full": "Disk space full"
+    },
+    "warnings": {
+      "large_image": "Large image file - processing may take time",
+      "low_contrast": "Low contrast ratio detected",
+      "unsaved_changes": "You have unsaved changes",
+      "cache_full": "Cache is full - clearing old data"
+    },
+    "info": {
+      "processing": "Processing...",
+      "loading": "Loading...",
+      "saving": "Saving...",
+      "analyzing": "Analyzing...",
+      "extracting_colors": "Extracting colors...",
+      "no_image_loaded": "No image loaded yet",
+      "select_color_first": "Please select a color first"
+    },
+    "confirmations": {
+      "clear_history": "Are you sure you want to clear the color history?",
+      "clear_palette": "Are you sure you want to clear the palette?",
+      "delete_palette": "Are you sure you want to delete palette '{name}'?",
+      "exit_application": "Are you sure you want to exit the application?",
+      "reset_settings": "Are you sure you want to reset settings to default values?"
+    }
+  },
+  "tooltips": {
+    "load_image": "Load an image file from your computer",
+    "zoom_in": "Zoom into the image (You can also use mouse wheel)",
+    "zoom_out": "Zoom out of the image",
+    "fit_to_screen": "Fit the image to screen size",
+    "copy_color": "Copy color code to clipboard",
+    "add_to_palette": "Add this color to current palette",
+    "save_palette": "Save current palette as file",
+    "pixel_grid": "Show pixel grid at high zoom levels"
+  },
+  "keyboard_shortcuts": {
+    "load_image": "Ctrl+O",
+    "save_palette": "Ctrl+S",
+    "copy_color": "Ctrl+C",
+    "zoom_in": "Ctrl++",
+    "zoom_out": "Ctrl+-",
+    "fit_to_screen": "Ctrl+0",
+    "toggle_pixel_grid": "G",
+    "toggle_minimap": "M",
+    "clear_history": "Ctrl+H",
+    "settings": "Ctrl+,",
+    "exit": "Ctrl+Q"
+  },
+  "suggestions": {
+    "Check if the file exists and is accessible": "Check if the file exists and is accessible",
+    "Verify the file format is supported": "Verify the file format is supported",
+    "Try with a different image file": "Try with a different image file",
+    "Check file permissions": "Check file permissions",
+    "Use a supported image format (PNG, JPEG, GIF, BMP, TIFF, WebP, SVG)": "Use a supported image format (PNG, JPEG, GIF, BMP, TIFF, WebP, SVG)",
+    "Convert the image to a supported format": "Convert the image to a supported format",
+    "Check if the file extension matches the actual format": "Check if the file extension matches the actual format",
+    "Check if the color values are within valid ranges": "Check if the color values are within valid ranges",
+    "Try with a different color format": "Try with a different color format",
+    "Verify the input color data is correct": "Verify the input color data is correct",
+    "Check if the palette file exists and is accessible": "Check if the palette file exists and is accessible",
+    "Verify the palette format is correct": "Verify the palette format is correct",
+    "Try creating a new palette": "Try creating a new palette",
+    "Close other applications to free memory": "Close other applications to free memory",
+    "Try with a smaller image": "Try with a smaller image",
+    "Restart the application": "Restart the application",
+    "Check available system memory": "Check available system memory",
+    "Check if the file path is correct": "Check if the file path is correct",
+    "Verify file permissions": "Verify file permissions",
+    "Ensure the directory exists": "Ensure the directory exists",
+    "Try with a different location": "Try with a different location",
+    "Check your internet connection": "Check your internet connection",
+    "Try again later": "Try again later",
+    "Verify the URL is correct": "Verify the URL is correct",
+    "Check firewall settings": "Check firewall settings",
+    "Try refreshing the interface": "Try refreshing the interface",
+    "Check if the component is properly initialized": "Check if the component is properly initialized"
+  }
+}

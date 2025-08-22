@@ -1,0 +1,229 @@
+{
+  "ui": {
+    "main_window": {
+      "title": "Gelişmiş Renk Seçici",
+      "load_image": "Resim Yükle",
+      "clear_image": "Temizle",
+      "file_menu": "Dosya",
+      "edit_menu": "Düzenle",
+      "view_menu": "Görünüm",
+      "tools_menu": "Araçlar",
+      "help_menu": "Yardım",
+      "exit": "Çıkış"
+    },
+    "image_canvas": {
+      "zoom_in": "Yakınlaştır",
+      "zoom_out": "Uzaklaştır",
+      "fit_to_screen": "Ekrana Sığdır",
+      "actual_size": "Gerçek Boyut",
+      "enable_pixel_grid": "Piksel Izgarasını Etkinleştir",
+      "disable_pixel_grid": "Piksel Izgarasını Devre Dışı Bırak",
+      "show_minimap": "Mini Haritayı Göster",
+      "hide_minimap": "Mini Haritayı Gizle"
+    },
+    "color_panel": {
+      "title": "Renk Bilgileri",
+      "rgb_label": "RGB",
+      "hex_label": "HEX",
+      "hsl_label": "HSL",
+      "hsv_label": "HSV",
+      "cmyk_label": "CMYK",
+      "copy_button": "Kopyala",
+      "copy_all": "Tümünü Kopyala",
+      "css_format": "CSS Formatı",
+      "programming_format": "Programlama Formatı",
+      "coordinates": "Koordinatlar",
+      "x_position": "X: {x}",
+      "y_position": "Y: {y}"
+    },
+    "palette_panel": {
+      "title": "Renk Paleti",
+      "new_palette": "Yeni Palet",
+      "save_palette": "Paleti Kaydet",
+      "load_palette": "Palet Yükle",
+      "export_palette": "Paleti Dışa Aktar",
+      "add_color": "Renk Ekle",
+      "remove_color": "Rengi Kaldır",
+      "clear_palette": "Paleti Temizle",
+      "palette_name": "Palet Adı",
+      "color_count": "{count} renk"
+    },
+    "history_panel": {
+      "title": "Renk Geçmişi",
+      "clear_history": "Geçmişi Temizle",
+      "add_to_favorites": "Favorilere Ekle",
+      "remove_from_favorites": "Favorilerden Kaldır",
+      "search_placeholder": "Renklerde ara...",
+      "no_history": "Henüz renk geçmişi yok",
+      "favorites": "Favoriler"
+    },
+    "analysis_panel": {
+      "title": "Renk Analizi",
+      "dominant_colors": "Baskın Renkler",
+      "color_histogram": "Renk Histogramı",
+      "color_distribution": "Renk Dağılımı",
+      "average_color": "Ortalama Renk",
+      "extract_palette": "Palet Çıkar",
+      "analyze_image": "Resmi Analiz Et"
+    },
+    "settings_panel": {
+      "title": "Ayarlar",
+      "appearance": "Görünüm",
+      "theme": "Tema",
+      "language": "Dil",
+      "behavior": "Davranış",
+      "default_color_format": "Varsayılan Renk Formatı",
+      "auto_save_palettes": "Paletleri Otomatik Kaydet",
+      "max_history_items": "Maksimum Geçmiş Öğesi",
+      "performance": "Performans",
+      "zoom_sensitivity": "Zoom Hassasiyeti",
+      "enable_pixel_grid": "Piksel Izgarasını Etkinleştir",
+      "pixel_grid_threshold": "Piksel Izgarası Eşiği",
+      "cache_size": "Önbellek Boyutu"
+    },
+    "accessibility": {
+      "title": "Erişilebilirlik",
+      "wcag_compliance": "WCAG Uyumluluğu",
+      "contrast_ratio": "Kontrast Oranı",
+      "aa_compliant": "AA Uyumlu",
+      "aaa_compliant": "AAA Uyumlu",
+      "not_compliant": "Uyumlu Değil",
+      "color_blindness": "Renk Körlüğü",
+      "simulate_protanopia": "Protanopi Simülasyonu",
+      "simulate_deuteranopia": "Deuteranopi Simülasyonu",
+      "simulate_tritanopia": "Tritanopi Simülasyonu",
+      "color_harmony": "Renk Uyumu",
+      "complementary": "Tamamlayıcı",
+      "analogous": "Benzer",
+      "triadic": "Üçlü"
+    },
+    "export": {
+      "title": "Dışa Aktar",
+      "format": "Format",
+      "css_format": "CSS",
+      "scss_format": "SCSS",
+      "json_format": "JSON",
+      "ase_format": "Adobe ASE",
+      "aco_format": "Adobe ACO",
+      "gpl_format": "GIMP GPL",
+      "export_button": "Dışa Aktar",
+      "file_saved": "Dosya kaydedildi: {filename}"
+    },
+    "themes": {
+      "light": "Açık",
+      "dark": "Koyu",
+      "auto": "Otomatik"
+    },
+    "languages": {
+      "tr": "Türkçe",
+      "en": "English"
+    }
+  },
+  "messages": {
+    "success": {
+      "image_loaded": "Resim başarıyla yüklendi",
+      "color_copied": "Renk kodu kopyalandı: {color}",
+      "palette_saved": "Palet kaydedildi: {name}",
+      "palette_loaded": "Palet yüklendi: {name}",
+      "settings_saved": "Ayarlar kaydedildi",
+      "language_changed": "Dil değiştirildi: {language}",
+      "theme_changed": "Tema değiştirildi: {theme}"
+    },
+    "errors": {
+      "generic_error": "Beklenmeyen bir hata oluştu",
+      "image_load_failed": "Resim yüklenemedi: {reason}",
+      "unsupported_format": "Desteklenmeyen dosya formatı. Lütfen PNG, JPEG, GIF, BMP, TIFF, WebP veya SVG formatı kullanın.",
+      "color_conversion_failed": "Renk {source_format} formatından {target_format} formatına dönüştürülemedi",
+      "palette_operation_failed": "Palet işlemi '{operation}' başarısız oldu",
+      "validation_failed": "Geçersiz {field_name}: {validation_rule}",
+      "memory_error": "{operation} sırasında bellek hatası. Lütfen daha küçük bir resim deneyin veya diğer uygulamaları kapatın.",
+      "file_operation_failed": "Dosya işlemi '{operation}' {file_path} üzerinde başarısız oldu",
+      "network_error": "Ağ işlemi '{operation}' başarısız oldu. Lütfen internet bağlantınızı kontrol edin.",
+      "ui_error": "{component} bileşeninde arayüz hatası. Lütfen yenilemeyi deneyin veya uygulamayı yeniden başlatın.",
+      "unexpected_error": "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin veya uygulamayı yeniden başlatın.",
+      "file_not_found": "Dosya bulunamadı: {filename}",
+      "palette_save_failed": "Palet kaydedilemedi: {error}",
+      "palette_load_failed": "Palet yüklenemedi: {error}",
+      "invalid_color_format": "Geçersiz renk formatı",
+      "memory_limit_exceeded": "Bellek sınırı aşıldı",
+      "permission_denied": "İzin reddedildi",
+      "disk_space_full": "Disk alanı dolu"
+    },
+    "warnings": {
+      "large_image": "Büyük resim dosyası - işlem zaman alabilir",
+      "low_contrast": "Düşük kontrast oranı tespit edildi",
+      "unsaved_changes": "Kaydedilmemiş değişiklikler var",
+      "cache_full": "Önbellek dolu - eski veriler temizleniyor"
+    },
+    "info": {
+      "processing": "İşleniyor...",
+      "loading": "Yükleniyor...",
+      "saving": "Kaydediliyor...",
+      "analyzing": "Analiz ediliyor...",
+      "extracting_colors": "Renkler çıkarılıyor...",
+      "no_image_loaded": "Henüz resim yüklenmedi",
+      "select_color_first": "Önce bir renk seçin"
+    },
+    "confirmations": {
+      "clear_history": "Renk geçmişini temizlemek istediğinizden emin misiniz?",
+      "clear_palette": "Paleti temizlemek istediğinizden emin misiniz?",
+      "delete_palette": "'{name}' paletini silmek istediğinizden emin misiniz?",
+      "exit_application": "Uygulamadan çıkmak istediğinizden emin misiniz?",
+      "reset_settings": "Ayarları varsayılan değerlere sıfırlamak istediğinizden emin misiniz?"
+    }
+  },
+  "tooltips": {
+    "load_image": "Bilgisayarınızdan resim dosyası yükleyin",
+    "zoom_in": "Resmi yakınlaştırın (Mouse tekerleği ile de yapabilirsiniz)",
+    "zoom_out": "Resmi uzaklaştırın",
+    "fit_to_screen": "Resmi ekrana sığacak şekilde boyutlandırın",
+    "copy_color": "Renk kodunu panoya kopyalayın",
+    "add_to_palette": "Bu rengi mevcut palete ekleyin",
+    "save_palette": "Mevcut paleti dosya olarak kaydedin",
+    "pixel_grid": "Yüksek zoom seviyelerinde piksel izgarasını gösterin"
+  },
+  "keyboard_shortcuts": {
+    "load_image": "Ctrl+O",
+    "save_palette": "Ctrl+S",
+    "copy_color": "Ctrl+C",
+    "zoom_in": "Ctrl++",
+    "zoom_out": "Ctrl+-",
+    "fit_to_screen": "Ctrl+0",
+    "toggle_pixel_grid": "G",
+    "toggle_minimap": "M",
+    "clear_history": "Ctrl+H",
+    "settings": "Ctrl+,",
+    "exit": "Ctrl+Q"
+  }
+}  }
+,
+  "suggestions": {
+    "Check if the file exists and is accessible": "Dosyanın var olduğunu ve erişilebilir olduğunu kontrol edin",
+    "Verify the file format is supported": "Dosya formatının desteklendiğini doğrulayın",
+    "Try with a different image file": "Farklı bir resim dosyası deneyin",
+    "Check file permissions": "Dosya izinlerini kontrol edin",
+    "Use a supported image format (PNG, JPEG, GIF, BMP, TIFF, WebP, SVG)": "Desteklenen bir resim formatı kullanın (PNG, JPEG, GIF, BMP, TIFF, WebP, SVG)",
+    "Convert the image to a supported format": "Resmi desteklenen bir formata dönüştürün",
+    "Check if the file extension matches the actual format": "Dosya uzantısının gerçek formatla eşleştiğini kontrol edin",
+    "Check if the color values are within valid ranges": "Renk değerlerinin geçerli aralıklarda olduğunu kontrol edin",
+    "Try with a different color format": "Farklı bir renk formatı deneyin",
+    "Verify the input color data is correct": "Giriş renk verilerinin doğru olduğunu doğrulayın",
+    "Check if the palette file exists and is accessible": "Palet dosyasının var olduğunu ve erişilebilir olduğunu kontrol edin",
+    "Verify the palette format is correct": "Palet formatının doğru olduğunu doğrulayın",
+    "Try creating a new palette": "Yeni bir palet oluşturmayı deneyin",
+    "Close other applications to free memory": "Belleği boşaltmak için diğer uygulamaları kapatın",
+    "Try with a smaller image": "Daha küçük bir resim deneyin",
+    "Restart the application": "Uygulamayı yeniden başlatın",
+    "Check available system memory": "Mevcut sistem belleğini kontrol edin",
+    "Check if the file path is correct": "Dosya yolunun doğru olduğunu kontrol edin",
+    "Verify file permissions": "Dosya izinlerini doğrulayın",
+    "Ensure the directory exists": "Dizinin var olduğundan emin olun",
+    "Try with a different location": "Farklı bir konum deneyin",
+    "Check your internet connection": "İnternet bağlantınızı kontrol edin",
+    "Try again later": "Daha sonra tekrar deneyin",
+    "Verify the URL is correct": "URL'nin doğru olduğunu doğrulayın",
+    "Check firewall settings": "Güvenlik duvarı ayarlarını kontrol edin",
+    "Try refreshing the interface": "Arayüzü yenilemeyi deneyin",
+    "Check if the component is properly initialized": "Bileşenin düzgün şekilde başlatıldığını kontrol edin"
+  }
+}
